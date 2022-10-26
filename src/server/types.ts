@@ -1,6 +1,7 @@
 import { ComponentType } from "preact";
 import { ConnInfo, rutt, ServeInit } from "./deps.ts";
 import { InnerRenderFunction, RenderContext } from "./render.ts";
+import type { ServerContext } from "./context.ts";
 
 // --- APPLICATION CONFIGURATION ---
 
@@ -248,7 +249,8 @@ export interface Plugin {
   name: string;
 
   /** A map of a snake-case names to a import specifiers. The entrypoints
-   * declared here can later be used in the "scripts" option of
+   * declared here can later be used in import { ServerContext } from './context';
+ the "scripts" option of
    * `PluginRenderResult` to load the entrypoint's code on the client.
    */
   entrypoints?: Record<string, string>;
@@ -261,6 +263,8 @@ export interface Plugin {
    * inject CSS into the page, or load additional JS files on the client.
    */
   render?(ctx: PluginRenderContext): PluginRenderResult;
+
+  setupServerContext?(ctx: ServerContext): ServerContext;
 }
 
 export interface PluginRenderContext {
